@@ -1,12 +1,32 @@
 import React, { Component } from 'react';
+import {ProductContainer} from './ProductContainer';
 
 export class MainPage extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            products: []
+            products: [],
+            productSelected: null,
+            arrayOfSelectedProducts: []
         }
+
+        this.onSelectProduct = this.onSelectProduct.bind(this);
+        this.onConfirmProduct = this.onConfirmProduct.bind(this);
+    }
+
+    onSelectProduct = (index) => {
+        this.setState({productSelected: index});
+    }
+
+    onConfirmProduct = (product) => {
+        this.setState(prevState => {
+            let prevStatearrayOfSelectedProducts = prevState.arrayOfSelectedProducts;
+            
+            prevStatearrayOfSelectedProducts.push(product);
+                
+            return {productSelected: null, arrayOfSelectedProducts: prevStatearrayOfSelectedProducts}
+        });
     }
 
     //Since my background is with react-redux and not with next.js, this is a workaround to avoid losing time implementing all of the reducers and services necessary on react-redux
@@ -18,9 +38,27 @@ export class MainPage extends Component {
 
     render() {
         return (
-            <div>
-                {this.state.products.map(product => <div>{product.name}</div>)}
+            <div style={{display: 'inline'}}>
+                <div style={{display: 'flex', justifyContent: 'space-between', width: '1200px'}}>
+                    {this.state.products.map((product, index) =>
+                        <ProductContainer
+                            index={index}
+                            product={product}
+                            isSelected={index === this.state.productSelected}
+                            onSelect={this.onSelectProduct}
+                            onConfirm={this.onConfirmProduct}/>
+                    )}
+                </div>
+                <br/>
+                {this.state.arrayOfSelectedProducts.length > 0 && 'Selected Products:'}
+                <div style={{display: 'inline'}}>
+                    {this.state.arrayOfSelectedProducts.map((product) => <p>{product.name}, size {product.sizeSelected}, color {product.colorSelected}</p>
+                    )}
+                </div>
             </div>
         )
     }
 }
+
+//TODO: Fix the div placement and css
+//TODO: Mobile friendly
