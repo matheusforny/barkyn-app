@@ -1,0 +1,7 @@
+[{
+    "name": "Polo Shirt",
+    "imageUrl": ["https://images-na.ssl-images-amazon.com/images/I/61-dDezP85L._AC_SX679_.jpg", "https://m.media-amazon.com/images/I/61+Nw5B1IDL._AC_SL1500_.jpg"],
+    "sizes": ["P", "M", "G"],
+    "colors": ["White", "Black"],
+    "description": "The minimalist design that everyone is asking for!"
+}]
