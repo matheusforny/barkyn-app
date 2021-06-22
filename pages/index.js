@@ -42,7 +42,7 @@ const MainPage = ({props}) => {
             <p>{product.name}, size {product.sizeSelected}, color {product.colorSelected}</p>
           )}
         </div>
-        <p>Total Price: {calculateTotalPrice()}</p>
+        {arrayOfSelectedProducts.length > 0 && <p>Total Price: {calculateTotalPrice()}</p>} 
         {arrayOfSelectedProducts.length > 0 && <Link href="/checkout">Proceed to Checkout</Link>}
       </div>
     </div>

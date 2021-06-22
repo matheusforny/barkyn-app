@@ -31,7 +31,7 @@ const ProductContainer = ({index, product, isSelected}) => {
         )}
       </div>
       <br/>
-      <button disabled={sizeSelected === null} onClick={() => onConfirm()}>Confirm?</button>
+      <button disabled={sizeSelected === null} onClick={() => onConfirm()}>Add to Cart?</button>
     </div>
   }
   
