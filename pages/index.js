@@ -14,6 +14,16 @@ const MainPage = ({props}) => {
     }
   }, []);
 
+  const calculateTotalPrice = () => {
+    let totalValue = 0;
+
+    for (let index = 0; index < arrayOfSelectedProducts.length; index++) {
+      totalValue += arrayOfSelectedProducts[index].price;
+    }
+
+    return totalValue;
+  }
+
   return (
     <div className={styles.container}>
       <div style={{display: 'inline'}}>
@@ -32,7 +42,7 @@ const MainPage = ({props}) => {
             <p>{product.name}, size {product.sizeSelected}, color {product.colorSelected}</p>
           )}
         </div>
-        <br/>
+        <p>Total Price: {calculateTotalPrice()}</p>
         {arrayOfSelectedProducts.length > 0 && <Link href="/checkout">Proceed to Checkout</Link>}
       </div>
     </div>
