@@ -47,6 +47,7 @@ export class ProductContainer extends Component {
         return (
             <div style={{border: '1px solid black', borderRadius: '5px', minWidth: '17.5%', textAlign: 'center', cursor: this.state.isSelected ? 'default' : 'pointer'}} onClick={() => !this.state.isSelected ? this.props.onSelect(this.props.index) : {}}>
                 <div style={{border: '1px solid black', borderRadius: '5px', height: '300px', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundImage:'url(' + this.props.product.imageUrl[this.state.colorSelected] + ')'}}></div>
+                <div>€ {this.props.product.price}</div>
                 <p style={{fontWeight: 'bolder'}}>{this.props.product.name}</p>
                 {this.props.isSelected && this.renderSelectedOptions()}
             </div>

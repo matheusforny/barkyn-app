@@ -3,29 +3,34 @@
     "imageUrl": ["https://images-na.ssl-images-amazon.com/images/I/61-dDezP85L._AC_SX679_.jpg", "https://m.media-amazon.com/images/I/61+Nw5B1IDL._AC_SL1500_.jpg"],
     "sizes": ["P", "M", "G"],
     "colors": ["White", "Black"],
-    "description": "The minimalist design that everyone is asking for!"
+    "description": "The minimalist design that everyone is asking for!",
+    "price": "15.99"
 }, {
     "name": "Biking Shirt",
     "imageUrl": ["https://images-na.ssl-images-amazon.com/images/I/61I4KpyFYuS._AC_SX679_.jpg"],
     "sizes": ["P", "M"],
     "colors": ["Purple"],
-    "description": "The biking shirt of your dream!"
+    "description": "The biking shirt of your dream!",
+    "price": "13.99"
 }, {
     "name": "Slim Fitness Shirt",
     "imageUrl": ["https://images-na.ssl-images-amazon.com/images/I/610NTc7ELpL._AC_SY879_.jpg", "https://m.media-amazon.com/images/I/61PxFCHvzYL._AC_SY879_.jpg"],
     "sizes": ["M", "G"],
     "colors": ["Gray", "Green"],
-    "description": "Protect yourself from UV rays!"
+    "description": "Protect yourself from UV rays!",
+    "price": "15.99"
 }, {
     "name": "Turtle Neck Shirt",
     "imageUrl": ["https://images-na.ssl-images-amazon.com/images/I/51c2tziOj0L._AC_SX679_.jpg"],
     "sizes": ["M", "G"],
     "colors": ["Black"],
-    "description": "It's a turtle. It's a neck. It's Turtle Neck!"
+    "description": "It's a turtle. It's a neck. It's Turtle Neck!",
+    "price": "19.99"
 }, {
     "name": "Cardigan",
     "imageUrl": ["https://images-na.ssl-images-amazon.com/images/I/510aw1YyjBL._AC_SX679_.jpg", "https://m.media-amazon.com/images/I/61FUTc4i05L._AC_SX679_.jpg"],
     "sizes": ["M"],
     "colors": ["Blue", "Gray"],
-    "description": "As Caio Paulista said, cold and calculist!"
+    "description": "As Caio Paulista said, cold and calculist!",
+    "price": "19.99"
 }]
