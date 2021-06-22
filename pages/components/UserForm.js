@@ -1,59 +1,138 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../../context/state';
 
 const UserForm = () => {
+  const {setUserMailForm} = useAppContext();
+
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userAddress, setUserAdress] = useState('');
   const [userPostalCode, setUserPostalCode] = useState('');
   const [userCountry, setUserCountry] = useState('');
   const [userPhone, setUserPhone] = useState('');
+  const [localStorageUserMailForm, setLocalStorageUserMailForm] = useLocalStorage('userMailingForm', {});
+
+  useEffect(() => {
+    if (typeof localStorageUserMailForm === 'object') {
+      setUserName(localStorageUserMailForm.userName);
+      setUserEmail(localStorageUserMailForm.userEmail);
+      setUserAdress(localStorageUserMailForm.userAddress);
+      setUserPostalCode(localStorageUserMailForm.userPostalCode);
+      setUserCountry(localStorageUserMailForm.userCountry);
+      setUserPhone(localStorageUserMailForm.userPhone);
+    }
+  }, []);
+
+  // Hook
+  function useLocalStorage(key, initialValue) {
+    const [storedValue, setStoredValue] = useState(() => {
+      try {
+        const item = window.localStorage.getItem(key);
+
+        return item ? JSON.parse(item) : initialValue;
+      } catch (error) {
+        console.log(error);
+        return initialValue;
+      }
+    });
+
+    const setValue = (value) => {
+      try {
+        const valueToStore =
+          value instanceof Function ? value(storedValue) : value;
+
+        setStoredValue(valueToStore);
+
+        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    return [storedValue, setValue];
+  }
+
+  const createFormObject = () => {
+    return {
+      userName: userName,
+      userEmail: userEmail,
+      userAddress: userAddress,
+      userPostalCode: userPostalCode,
+      userCountry: userCountry,
+      userPhone: userPhone
+    };
+  }
+
+  const clearForm = () => {
+    setUserName('');
+    setUserEmail('');
+    setUserAdress('');
+    setUserPostalCode('');
+    setUserCountry('');
+    setUserPhone('');
+  }
+
+  const onSave = () => {
+    let formObject = createFormObject();
+
+    setLocalStorageUserMailForm(formObject);
+
+    onSubmit(formObject);
+  }
+
+  const onSubmit = (formObject) => {
+    setUserMailForm(formObject);
+  }
 
   //Since I will look up an external component library to better draw the form, I'm using a barebone approach now 
   return (
-    <form>
-      <label>
-        Name:
-        <input type="text" value={userName} required onChange={(event) => setUserName(event.target.value)}/>
-      </label>
+    <div>
+      <form>
+        <label>
+          Name:
+          <input type="text" value={userName} required onChange={(event) => setUserName(event.target.value)}/>
+        </label>
+        <br/>
+        <br/>
+        <label>
+          E-Mail:
+          <input type="email" value={userEmail} required onChange={(event) => setUserEmail(event.target.value)}/>
+        </label>
+        <br/>
+        <br/>
+        <label>
+          Adress:
+          <input type="text" value={userAddress} required onChange={(event) => setUserAdress(event.target.value)}/>
+        </label>
+        <br/>
+        <br/>
+        <label>
+          Postal Code:
+          <input type="zip" value={userPostalCode} required onChange={(event) => setUserPostalCode(event.target.value)}/>
+        </label>
+        <br/>
+        <br/>
+        <label>
+          Country:
+          <input type="text" value={userCountry} required onChange={(event) => setUserCountry(event.target.value)}/>
+        </label>
+        <br/>
+        <br/>
+        <label>
+          Phone:
+          <input type="tel"  pattern="[0-9]{5}-[0-9]{4}" value={userPhone} required onChange={(event) => setUserPhone(event.target.value)}/>
+        </label>
+        <br/>
+        <br/>
+        <div style={{display: 'flex', alignContent: 'space-between'}}>
+          <button onClick={() => onSave()}>Save</button>
+          &nbsp;
+          <button>Submit</button>
+        </div>
+        </form>
       <br/>
-      <br/>
-      <label>
-        E-Mail:
-        <input type="email" value={userEmail} required onChange={(event) => setUserEmail(event.target.value)}/>
-      </label>
-      <br/>
-      <br/>
-      <label>
-        Adress:
-        <input type="text" value={userAddress} required onChange={(event) => setUserAdress(event.target.value)}/>
-      </label>
-      <br/>
-      <br/>
-      <label>
-        Postal Code:
-        <input type="zip" value={userPostalCode} required onChange={(event) => setUserPostalCode(event.target.value)}/>
-      </label>
-      <br/>
-      <br/>
-      <label>
-        Country:
-        <input type="text" value={userCountry} required onChange={(event) => setUserCountry(event.target.value)}/>
-      </label>
-      <br/>
-      <br/>
-      <label>
-        Phone:
-        <input type="tel"  pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value={userPhone} required onChange={(event) => setUserPhone(event.target.value)}/>
-      </label>
-      <br/>
-      <br/>
-      <div style={{display: 'flex', alignContent: 'space-between'}}>
-        <button>Save</button>
-        &nbsp;
-        <button>Submit</button>
-      </div>
-    </form>
+      <button onClick={() => clearForm()}>Clear</button>
+    </div>
   )
 }
 
