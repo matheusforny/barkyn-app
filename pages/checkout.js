@@ -1,5 +1,6 @@
 import styles from '../styles/Home.module.css'
 import { useAppContext } from '../context/state';
+import UserForm from './components/UserForm';
 
 const CheckoutPage = ({props}) => {
     const {arrayOfSelectedProducts} = useAppContext();
@@ -25,6 +26,12 @@ const CheckoutPage = ({props}) => {
           </div>
           {arrayOfSelectedProducts.length > 0 && <p>Total Price: {calculateTotalPrice()}</p>} 
         </div>
+        <br/>
+        <br/>
+        Please, enter your mailing address:
+        <br/>
+        <br/>
+        <UserForm/>
       </div>
     );
   }

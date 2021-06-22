@@ -6,6 +6,7 @@ export const AppWrapper = ({ children }) => {
     const [products, setProducts] = useState([]);
     const [arrayOfSelectedProducts, setArrayOfSelectedProducts] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const [userForm, setUserForm] = useState({});
 
     const handleArrayOfSelectedProducts = (newProduct) => {
         let newArray = arrayOfSelectedProducts;
@@ -19,9 +20,11 @@ export const AppWrapper = ({ children }) => {
         products,
         arrayOfSelectedProducts,
         selectedProduct,
+        userForm,
         setProducts,
         handleArrayOfSelectedProducts,
-        setSelectedProduct
+        setSelectedProduct,
+        setUserForm
     }
 
     return (
