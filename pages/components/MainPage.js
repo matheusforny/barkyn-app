@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {ProductContainer} from './ProductContainer';
+import Link from 'next/link';
 
 export class MainPage extends Component {
     constructor(props) {
@@ -52,9 +53,12 @@ export class MainPage extends Component {
                 <br/>
                 {this.state.arrayOfSelectedProducts.length > 0 && 'Selected Products:'}
                 <div style={{display: 'inline'}}>
-                    {this.state.arrayOfSelectedProducts.map((product) => <p>{product.name}, size {product.sizeSelected}, color {product.colorSelected}</p>
+                    {this.state.arrayOfSelectedProducts.map((product) =>
+                        <p>{product.name}, size {product.sizeSelected}, color {product.colorSelected}</p>
                     )}
                 </div>
+                <br/>
+                {this.state.arrayOfSelectedProducts.length > 0 && <Link href="/checkout">Proceed to Checkout</Link>}
             </div>
         )
     }
