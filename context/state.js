@@ -16,6 +16,10 @@ export const AppWrapper = ({ children }) => {
         setArrayOfSelectedProducts([...newArray]);
     }
 
+    const handleUserMailForm = (newUserMailForm) => {        
+        setUserMailForm({...newUserMailForm})
+    }
+
     const contextProps = {
         products,
         arrayOfSelectedProducts,
@@ -24,7 +28,7 @@ export const AppWrapper = ({ children }) => {
         setProducts,
         handleArrayOfSelectedProducts,
         setSelectedProduct,
-        setUserMailForm
+        handleUserMailForm
     }
 
     return (

@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../../context/state';
+import { useRouter } from 'next/router'
 
 const UserForm = () => {
-  const {setUserMailForm} = useAppContext();
+  const router = useRouter();
+
+  const {handleUserMailForm} = useAppContext();
 
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
@@ -10,6 +13,7 @@ const UserForm = () => {
   const [userPostalCode, setUserPostalCode] = useState('');
   const [userCountry, setUserCountry] = useState('');
   const [userPhone, setUserPhone] = useState('');
+
   const [localStorageUserMailForm, setLocalStorageUserMailForm] = useLocalStorage('userMailingForm', {});
 
   useEffect(() => {
@@ -20,6 +24,8 @@ const UserForm = () => {
       setUserPostalCode(localStorageUserMailForm.userPostalCode);
       setUserCountry(localStorageUserMailForm.userCountry);
       setUserPhone(localStorageUserMailForm.userPhone);
+
+      //TODO: Fix issue where localStorage resets the appContext
     }
   }, []);
 
@@ -77,11 +83,21 @@ const UserForm = () => {
 
     setLocalStorageUserMailForm(formObject);
 
-    onSubmit(formObject);
+    handleUserMailForm(formObject);
   }
 
-  const onSubmit = (formObject) => {
-    setUserMailForm(formObject);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    let formObject = createFormObject();
+    handleUserMailForm(formObject);
+
+    router.push("/success")
+  }
+
+  const validateForm = () => {
+    //TODO: Validate the form, not only the empty values
+    return userName !== '' && userEmail !== '' && userAddress !== '' && userPostalCode !== '' && userCountry !== '' && userPhone !== '';
   }
 
   //Since I will look up an external component library to better draw the form, I'm using a barebone approach now 
@@ -126,14 +142,18 @@ const UserForm = () => {
         <br/>
         <div style={{display: 'flex', alignContent: 'space-between'}}>
           <button onClick={() => onSave()}>Save</button>
-          &nbsp;
-          <button>Submit</button>
         </div>
         </form>
       <br/>
       <button onClick={() => clearForm()}>Clear</button>
+      <br/>
+      <br/>
+      {validateForm() &&  <a href={"/success"} onClick={handleSubmit}>Submit</a>}
     </div>
   )
 }
 
 export default UserForm;
+
+//Todo: Using the new form options, validate the flag with the form values
+//Todo: Fix problem with page being rendered twice after saving the data

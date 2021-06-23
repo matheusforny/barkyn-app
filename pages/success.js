@@ -1,15 +1,14 @@
 import styles from '../styles/Home.module.css'
 import { useAppContext } from '../context/state';
-import UserForm from './components/UserForm';
 import { calculateTotalPrice } from '../helper/Helper';
 
-const CheckoutPage = () => {
-    const {arrayOfSelectedProducts} = useAppContext();
+const CheckoutPage = ({props}) => {
+    const {arrayOfSelectedProducts, userMailForm} = useAppContext();
   
     return (
       <div className={styles.container}>
         <div style={{display: 'inline'}}>
-          {arrayOfSelectedProducts.length > 0 && 'Cart Summary:'}
+          Thanks for your product, {userMailForm.userName}!
           <div style={{display: 'inline'}}>
             {arrayOfSelectedProducts.map((product) =>
               <p>{product.name}, size {product.sizeSelected}, color {product.colorSelected}</p>
@@ -19,10 +18,10 @@ const CheckoutPage = () => {
         </div>
         <br/>
         <br/>
-        Please, enter your mailing address:
+        Your selections will be sent to:
         <br/>
         <br/>
-        <UserForm/>
+        {userMailForm.userAddress}, {userMailForm.userPostalCode}, {userMailForm.userCountry}
       </div>
     );
   }

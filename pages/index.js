@@ -3,6 +3,7 @@ import { useAppContext } from '../context/state';
 import styles from '../styles/Home.module.css'
 import ProductContainer from './components/ProductContainer';
 import Link from 'next/link';
+import { calculateTotalPrice } from '../helper/Helper';
 
 const MainPage = ({props}) => {
   const {products, arrayOfSelectedProducts, selectedProduct, setProducts} = useAppContext();
@@ -13,16 +14,6 @@ const MainPage = ({props}) => {
       setProducts(productsData);
     }
   }, []);
-
-  const calculateTotalPrice = () => {
-    let totalValue = 0;
-
-    for (let index = 0; index < arrayOfSelectedProducts.length; index++) {
-      totalValue += arrayOfSelectedProducts[index].price;
-    }
-
-    return totalValue;
-  }
 
   return (
     <div className={styles.container}>
@@ -42,7 +33,7 @@ const MainPage = ({props}) => {
             <p>{product.name}, size {product.sizeSelected}, color {product.colorSelected}</p>
           )}
         </div>
-        {arrayOfSelectedProducts.length > 0 && <p>Total Price: {calculateTotalPrice()}</p>} 
+        {arrayOfSelectedProducts.length > 0 && <p>Total Price: {calculateTotalPrice(arrayOfSelectedProducts)}</p>} 
         {arrayOfSelectedProducts.length > 0 && <Link href="/checkout">Proceed to Checkout</Link>}
       </div>
     </div>
