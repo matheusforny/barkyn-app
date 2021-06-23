@@ -24,8 +24,6 @@ const UserForm = () => {
       setUserPostalCode(localStorageUserMailForm.userPostalCode);
       setUserCountry(localStorageUserMailForm.userCountry);
       setUserPhone(localStorageUserMailForm.userPhone);
-
-      //TODO: Fix issue where localStorage resets the appContext
     }
   }, []);
 
@@ -49,7 +47,7 @@ const UserForm = () => {
 
         setStoredValue(valueToStore);
 
-        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+        localStorage.setItem(key, JSON.stringify(valueToStore));
       } catch (error) {
         console.log(error);
       }
@@ -140,11 +138,11 @@ const UserForm = () => {
         </label>
         <br/>
         <br/>
-        <div style={{display: 'flex', alignContent: 'space-between'}}>
-          <button onClick={() => onSave()}>Save</button>
-        </div>
         </form>
       <br/>
+      <div style={{display: 'flex', alignContent: 'space-between'}}>
+          <button onClick={() => onSave()}>Save</button>
+        </div>
       <button onClick={() => clearForm()}>Clear</button>
       <br/>
       <br/>
@@ -156,4 +154,3 @@ const UserForm = () => {
 export default UserForm;
 
 //Todo: Using the new form options, validate the flag with the form values
-//Todo: Fix problem with page being rendered twice after saving the data
