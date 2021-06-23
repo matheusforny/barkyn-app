@@ -1,51 +1,59 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../../context/state';
+import { Button, Container } from '@material-ui/core';
+import styles from '../../styles/ProductContainer.module.scss'
 
-const sizeOptions = ["P", "M", "G"];
-
-const ProductContainer = ({index, product, isSelected}) => {
-  const {setSelectedProduct, handleArrayOfSelectedProducts} = useAppContext();
+const ProductContainer = ({product}) => {
+  const {handleArrayOfSelectedProducts, setModalOpen} = useAppContext();
   const [sizeSelected, setSizeSelected] = useState(null);
   const [colorIndexSelected, setColorIndexSelected] = useState(0);
 
   const renderSelectedOptions = () => {
     return <div>
       <div>
-        {sizeOptions.map((option) =>
-          <button
-            style={{backgroundColor: sizeSelected === option ? 'gray' : 'white'}}
+        {product.sizes.map((option, index) =>
+          <Button
+            key={index}
+            style={{backgroundColor: sizeSelected === option ? 'gray' : '#f0eded'}}
             onClick={() => setSizeSelected(option)}
             disabled={!product.sizes.includes(option)}>
               {option}
-          </button>
+          </Button>
         )}
       </div>
       <br/>
       <div>
         {product.colors.map((color, index) =>
-          <button
-            style={{backgroundColor: colorIndexSelected === index ? 'gray' : 'white'}}
+          <Button
+            key={index}
+            className={styles.colorButton}
+            style={{backgroundColor: color, color: color.toLowerCase() === 'black' ? 'white' : 'black'}}
             onClick={() => setColorIndexSelected(index)}>
-              {color}
-          </button>
+            {colorIndexSelected === index ? '●' : ''}
+          </Button>
         )}
       </div>
       <br/>
-      <button disabled={sizeSelected === null} onClick={() => onConfirm()}>Add to Cart?</button>
+      <Button variant="contained" disabled={sizeSelected === null} onClick={() => onConfirm()}>Add to Cart?</Button>
+      <br/>
+      <br/>
     </div>
   }
   
   const onConfirm = () => {
     handleArrayOfSelectedProducts({...product, sizeSelected: sizeSelected, colorSelected: product.colors[colorIndexSelected]});
+
+    setModalOpen(true);
   }
 
   return (
-    <div style={{border: '1px solid black', borderRadius: '5px', minWidth: '17.5%', textAlign: 'center', cursor: isSelected ? 'default' : 'pointer'}} onClick={() => !isSelected ? setSelectedProduct(index) : {}}>
-      <div style={{border: '1px solid black', borderRadius: '5px', height: '300px', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundImage:'url(' + product.imageUrl[colorIndexSelected] + ')'}}></div>
+    <Container className={styles.informationItem}>
+      <div className={styles.imageDisplayer} style={{backgroundImage:'url(' + product.imageUrl[colorIndexSelected] + ')'}}></div>
+      <br/>
       <div>€ {product.price}</div>
-      <p style={{fontWeight: 'bolder'}}>{product.name}</p>
-        {isSelected && renderSelectedOptions()}
-      </div>
+      <p className={styles.priceText}>{product.name}</p>
+      {renderSelectedOptions()}
+    </Container>
   )
 }
 
@@ -54,6 +62,3 @@ ProductContainer.getInitialProps = async (ctx) => {
   }
 
 export default ProductContainer;
-
-//TODO: Properly add the styles
-//Add a blur over the screen if the product was selected

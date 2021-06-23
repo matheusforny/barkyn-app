@@ -5,13 +5,21 @@ const AppContext = createContext();
 export const AppWrapper = ({ children }) => {
     const [products, setProducts] = useState([]);
     const [arrayOfSelectedProducts, setArrayOfSelectedProducts] = useState([]);
-    const [selectedProduct, setSelectedProduct] = useState(null);
     const [userMailForm, setUserMailForm] = useState({});
+    const [isModalOpen, setModalOpen] = useState(false);
 
     const handleArrayOfSelectedProducts = (newProduct) => {
         let newArray = arrayOfSelectedProducts;
 
         newArray.push(newProduct);
+
+        setArrayOfSelectedProducts([...newArray]);
+    }
+
+    const removeItemFromSelectedProducts = (index) => {
+        let newArray = arrayOfSelectedProducts;
+
+        newArray.splice(index, 1);
 
         setArrayOfSelectedProducts([...newArray]);
     }
@@ -23,12 +31,13 @@ export const AppWrapper = ({ children }) => {
     const contextProps = {
         products,
         arrayOfSelectedProducts,
-        selectedProduct,
         userMailForm,
+        isModalOpen,
         setProducts,
         handleArrayOfSelectedProducts,
-        setSelectedProduct,
-        handleUserMailForm
+        removeItemFromSelectedProducts,
+        handleUserMailForm,
+        setModalOpen
     }
 
     return (

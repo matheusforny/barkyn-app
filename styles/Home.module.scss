@@ -1,11 +1,11 @@
+$primary-color: #f4f7fb;
+
 .container {
   min-height: 100vh;
   padding: 0 0.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  height: 100%;
+  width: 100%;
+  background-color: $primary-color;
 }
 
 .main {
@@ -118,4 +118,17 @@
     width: 100%;
     flex-direction: column;
   }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 40px 4px;
+  width: 100%;
+}
+
+.contents {
+  display: flex;
+  flex-direction: column;
+  padding: 0 4px;
 }

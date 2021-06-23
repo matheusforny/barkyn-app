@@ -1,0 +1,35 @@
+.layout {
+    display: grid;
+}
+
+.header {
+    position:initial !important;
+    font-weight: bold;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+}
+
+.toolbarButtonsRow {
+    display: inline-flex;
+    margin-left: 10px;
+}
+
+.itemsComponent {
+    display: flex;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.itemsComponent > p {
+    color: orange;
+    margin: 0px;
+}
+
+.productEntry {
+    display: flex;
+    justify-content: flex-end;
+    flex: 1 1 0px;
+}
