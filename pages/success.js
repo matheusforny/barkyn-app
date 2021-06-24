@@ -1,27 +1,18 @@
-import styles from '../styles/Success.module.css'
+import styles from '../styles/Success.module.scss'
 import { useAppContext } from '../context/state';
-import { calculateTotalPrice } from '../helper/Helper';
 
 const CheckoutPage = () => {
-    const {arrayOfSelectedProducts, userMailForm} = useAppContext();
+    const {userMailForm} = useAppContext();
   
     return (
-      <div className={styles.container}>
-        <div style={{display: 'inline'}}>
-          Thanks for your product, {userMailForm.userName}!
-          <div style={{display: 'inline'}}>
-            {arrayOfSelectedProducts.map((product) =>
-              <p>{product.name}, size {product.sizeSelected}, color {product.colorSelected}</p>
-            )}
-          </div>
-          {arrayOfSelectedProducts.length > 0 && <p>Total Price: {calculateTotalPrice(arrayOfSelectedProducts)}</p>} 
+      <div className={styles.textArea}>
+        <div>
+          <p className={styles.orderPlacedText}>Your order has been placed, {userMailForm.userName}!</p>
         </div>
         <br/>
+        <p className={styles.mailingText}>Your selections will be sent to: {userMailForm.userAddress}, {userMailForm.userPostalCode}, {userMailForm.userCountry}</p>
         <br/>
-        Your selections will be sent to:
-        <br/>
-        <br/>
-        {userMailForm.userAddress}, {userMailForm.userPostalCode}, {userMailForm.userCountry}
+        <p className={styles.thanksText}>Thanks for buying with us!</p>
       </div>
     );
   }
