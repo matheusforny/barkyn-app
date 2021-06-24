@@ -36,6 +36,7 @@ export const AppWrapper = ({ children }) => {
         setProducts,
         handleArrayOfSelectedProducts,
         removeItemFromSelectedProducts,
+        setArrayOfSelectedProducts,
         handleUserMailForm,
         setModalOpen
     }

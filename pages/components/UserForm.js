@@ -9,7 +9,7 @@ import { Button } from '@material-ui/core';
 const UserForm = () => {
   const router = useRouter();
 
-  const {arrayOfSelectedProducts, handleUserMailForm} = useAppContext();
+  const {arrayOfSelectedProducts, setArrayOfSelectedProducts, handleUserMailForm} = useAppContext();
 
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
@@ -92,6 +92,9 @@ const UserForm = () => {
 
     if (arrayOfInvalidComponents.every(value => value === false)) {
       handleUserMailForm(formObject);
+
+      //To simulate the purchase, we are emptying the cart
+      setArrayOfSelectedProducts([]);
 
       router.push('/success');
     } else {
