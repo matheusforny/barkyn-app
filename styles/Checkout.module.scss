@@ -1,0 +1,32 @@
+@media only screen and (max-width: 1200px) {
+    .pageLayout {
+        display: inline;
+        padding-top: 40px;
+        text-align: center;
+        font-weight: bolder;
+    }
+}
+
+@media only screen and (min-width: 1201px) {
+    .pageLayout {
+        display: flex;
+        justify-content: space-evenly;
+        padding-top: 40px;
+        text-align: center;
+        font-weight: bolder;
+    }
+}
+
+@media only screen and (min-width: 1201px) {
+    .pageLayout > div {
+        width: 50%;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .productsReview {
+        border-bottom: 1px solid black;
+        margin-bottom: 40px;
+        padding: 20px 0px;
+    }
+}

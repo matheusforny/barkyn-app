@@ -1,4 +1,4 @@
-import styles from '../styles/Home.module.css'
+import styles from '../styles/Success.module.css'
 import { useAppContext } from '../context/state';
 import { calculateTotalPrice } from '../helper/Helper';
 

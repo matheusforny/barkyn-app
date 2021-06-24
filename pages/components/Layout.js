@@ -41,9 +41,14 @@ const Layout = ({children}) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClickOpen} color="primary">
+          <Button variant="outlined" color="secondary" onClick={handleClickOpen}>
             Close
           </Button>
+          <Link href="/checkout">
+            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+              Checkout
+            </Button>
+          </Link>
         </DialogActions>
       </Dialog>
       {children}

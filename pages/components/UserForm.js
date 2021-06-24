@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../../context/state';
 import { useRouter } from 'next/router'
+import TextField from '@material-ui/core/TextField';
+import styles from '../../styles/UserForm.module.scss';
+import ReactInputMask from 'react-input-mask';
+import { Button } from '@material-ui/core';
 
 const UserForm = () => {
   const router = useRouter();
 
-  const {handleUserMailForm} = useAppContext();
+  const {arrayOfSelectedProducts, handleUserMailForm} = useAppContext();
 
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
@@ -13,6 +17,8 @@ const UserForm = () => {
   const [userPostalCode, setUserPostalCode] = useState('');
   const [userCountry, setUserCountry] = useState('');
   const [userPhone, setUserPhone] = useState('');
+
+  const [invalidComponents, setInvalidComponents] = useState(new Array().fill(true));
 
   const [localStorageUserMailForm, setLocalStorageUserMailForm] = useLocalStorage('userMailingForm', {});
 
@@ -56,6 +62,43 @@ const UserForm = () => {
     return [storedValue, setValue];
   }
 
+  const clearForm = () => {
+    setUserName('');
+    setUserEmail('');
+    setUserAdress('');
+    setUserPostalCode('');
+    setUserCountry('');
+    setUserPhone('');
+    
+    setInvalidComponents(new Array().fill(true));
+  }
+
+  const onSave = () => {
+    let arrayOfInvalidComponents = createInvalidComponentsArray();
+    let formObject = createFormObject();
+
+    if (arrayOfInvalidComponents.every(value => value === false)) {
+      setLocalStorageUserMailForm(formObject);
+
+      handleUserMailForm(formObject);
+    } else {
+      setInvalidComponents(arrayOfInvalidComponents);
+    }
+  }
+
+  const onSubmit = () => {
+    let arrayOfInvalidComponents = createInvalidComponentsArray();
+    let formObject = createFormObject();
+
+    if (arrayOfInvalidComponents.every(value => value === false)) {
+      handleUserMailForm(formObject);
+
+      router.push('/success');
+    } else {
+      setInvalidComponents(arrayOfInvalidComponents);
+    }
+  }
+
   const createFormObject = () => {
     return {
       userName: userName,
@@ -67,86 +110,109 @@ const UserForm = () => {
     };
   }
 
-  const clearForm = () => {
-    setUserName('');
-    setUserEmail('');
-    setUserAdress('');
-    setUserPostalCode('');
-    setUserCountry('');
-    setUserPhone('');
+  const createInvalidComponentsArray = () => {
+    let result = [];
+
+    result.push(verifyIfComponentIsInvalid('text', userName));
+    result.push(verifyIfComponentIsInvalid('email', userEmail));
+    result.push(verifyIfComponentIsInvalid('text', userAddress));
+    result.push(verifyIfComponentIsInvalid('zip', userPostalCode));
+    result.push(verifyIfComponentIsInvalid('text', userCountry));
+    result.push(verifyIfComponentIsInvalid('phone', userPhone));
+
+    return result;
   }
 
-  const onSave = () => {
-    let formObject = createFormObject();
-
-    setLocalStorageUserMailForm(formObject);
-
-    handleUserMailForm(formObject);
+  const verifyIfComponentIsInvalid = (componentType, componentValue) => {
+    switch (componentType) {
+      case 'text':
+        return componentValue === '';
+      case 'email':
+        return componentValue === '';
+      case 'zip':
+        return componentValue === '' || componentValue.length !== 9 || componentValue.indexOf(' ') >= 0;
+      case 'phone':
+        return componentValue === '';
+      default:
+        return false;
+    }
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    let formObject = createFormObject();
-    handleUserMailForm(formObject);
-
-    router.push("/success")
-  }
-
-  const validateForm = () => {
-    //TODO: Validate the form, not only the empty values
-    return userName !== '' && userEmail !== '' && userAddress !== '' && userPostalCode !== '' && userCountry !== '' && userPhone !== '';
-  }
-
-  //Since I will look up an external component library to better draw the form, I'm using a barebone approach now 
   return (
     <div>
-      <form>
-        <label>
-          Name:
-          <input type="text" value={userName} required onChange={(event) => setUserName(event.target.value)}/>
-        </label>
+      <p>Mailing Info</p>
+      <form className={styles.form}>
+        <TextField
+          className={styles.inputComponent}
+          label="Full Name"
+          value={userName}
+          error={invalidComponents[0]}
+          helperText={invalidComponents[0] ? "Text must not be empty" : ""}
+          onChange={(event) => setUserName(event.target.value)}/>
         <br/>
         <br/>
-        <label>
-          E-Mail:
-          <input type="email" value={userEmail} required onChange={(event) => setUserEmail(event.target.value)}/>
-        </label>
+        <TextField
+          className={styles.inputComponent}
+          label="E-Mail"
+          value={userEmail}
+          error={invalidComponents[0]}
+          helperText={invalidComponents[1] ? "E-mail must be properly entered" : ""}
+          onChange={(event) => setUserEmail(event.target.value)}/>
         <br/>
         <br/>
-        <label>
-          Adress:
-          <input type="text" value={userAddress} required onChange={(event) => setUserAdress(event.target.value)}/>
-        </label>
+        <TextField
+          className={styles.inputComponent}
+          label="Adress"
+          value={userAddress}
+          error={invalidComponents[2]}
+          helperText={invalidComponents[2] ? "Text must not be empty" : ""}
+          onChange={(event) => setUserAdress(event.target.value)}/>
         <br/>
         <br/>
-        <label>
-          Postal Code:
-          <input type="zip" value={userPostalCode} required onChange={(event) => setUserPostalCode(event.target.value)}/>
-        </label>
+        <ReactInputMask
+          mask="99999-999"
+          value={userPostalCode}
+          maskChar=""
+          onChange={(event) => setUserPostalCode(event.target.value)}>
+          {() => <TextField
+            className={styles.inputComponent}
+            label="Postal Code"
+            error={invalidComponents[3]}
+            helperText={invalidComponents[3] ? "Zip Code must follow the 99999-999 pattern" : ""}/>
+          }
+        </ReactInputMask>
         <br/>
         <br/>
-        <label>
-          Country:
-          <input type="text" value={userCountry} required onChange={(event) => setUserCountry(event.target.value)}/>
-        </label>
+        <TextField
+          className={styles.inputComponent}
+          label="Country"
+          value={userCountry}
+          error={invalidComponents[4]}
+          helperText={invalidComponents[4] ? "Text must not be empty" : ""}
+          onChange={(event) => setUserCountry(event.target.value)}/>
         <br/>
         <br/>
-        <label>
-          Phone:
-          <input type="tel"  pattern="[0-9]{5}-[0-9]{4}" value={userPhone} required onChange={(event) => setUserPhone(event.target.value)}/>
-        </label>
-        <br/>
-        <br/>
+        <ReactInputMask
+          mask="(99) 99999-9999"
+          value={userPhone}
+          maskChar=" "
+          onChange={(event) => setUserPhone(event.target.value)}>
+          {() => <TextField
+            className={styles.inputComponent}
+            label="Phone Number"
+            error={invalidComponents[5]}
+            helperText={invalidComponents[5] ? "Text must not be empty" : ""}/>
+          }
+        </ReactInputMask>
         </form>
       <br/>
-      <div style={{display: 'flex', alignContent: 'space-between'}}>
-          <button onClick={() => onSave()}>Save</button>
-        </div>
-      <button onClick={() => clearForm()}>Clear</button>
+      <div className={styles.buttonRow}>
+        <Button variant="outlined" color="secondary" onClick={() => clearForm()}>Clear</Button>
+        <Button variant="outlined" color="primary" onClick={() => onSave()}>Save</Button>
+      </div>
       <br/>
       <br/>
-      {validateForm() &&  <a href={"/success"} onClick={handleSubmit}>Submit</a>}
+      <Button variant="contained" color="primary" disabled={arrayOfSelectedProducts.length === 0} onClick={() => onSubmit()}>Place Your Order</Button>
     </div>
   )
 }
