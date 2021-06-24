@@ -22,7 +22,7 @@ const CheckoutPage = () => {
                     </div>
                   )}
                 </div>
-                {arrayOfSelectedProducts.length > 0 && <p>Total Price: {calculateTotalPrice(arrayOfSelectedProducts)}</p>} 
+                {arrayOfSelectedProducts.length > 0 && <p>Total Price: € {calculateTotalPrice(arrayOfSelectedProducts)}</p>} 
               </div> : 
               <div className={styles.productsReview}>
                 You haven't selected anything yet!
