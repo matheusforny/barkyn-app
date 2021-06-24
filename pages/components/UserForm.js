@@ -4,7 +4,8 @@ import { useRouter } from 'next/router'
 import TextField from '@material-ui/core/TextField';
 import styles from '../../styles/UserForm.module.scss';
 import ReactInputMask from 'react-input-mask';
-import { Button } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+import { calculateTotalPrice } from '../../helper/Helper';
 
 const UserForm = () => {
   const router = useRouter();
@@ -17,6 +18,8 @@ const UserForm = () => {
   const [userPostalCode, setUserPostalCode] = useState('');
   const [userCountry, setUserCountry] = useState('');
   const [userPhone, setUserPhone] = useState('');
+
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const [invalidComponents, setInvalidComponents] = useState(new Array().fill(true));
 
@@ -86,20 +89,25 @@ const UserForm = () => {
     }
   }
 
-  const onSubmit = () => {
+  const onPlaceOrder = () => {
     let arrayOfInvalidComponents = createInvalidComponentsArray();
-    let formObject = createFormObject();
 
     if (arrayOfInvalidComponents.every(value => value === false)) {
-      handleUserMailForm(formObject);
-
-      //To simulate the purchase, we are emptying the cart
-      setArrayOfSelectedProducts([]);
-
-      router.push('/success');
+      setModalOpen(true);
     } else {
       setInvalidComponents(arrayOfInvalidComponents);
     }
+  }
+
+  const onSubmit = () => {
+    let formObject = createFormObject();
+    
+    handleUserMailForm(formObject);
+
+    //To simulate the purchase, we are emptying the cart
+    setArrayOfSelectedProducts([]);
+
+    router.push('/success');
   }
 
   const createFormObject = () => {
@@ -215,7 +223,25 @@ const UserForm = () => {
       </div>
       <br/>
       <br/>
-      <Button variant="contained" color="primary" disabled={arrayOfSelectedProducts.length === 0} onClick={() => onSubmit()}>Place Your Order</Button>
+      <Button variant="contained" color="primary" disabled={arrayOfSelectedProducts.length === 0} onClick={() => onPlaceOrder()}>Place Your Order</Button>
+      <Dialog
+        open={isModalOpen}
+        onClose={() => setModalOpen(false)}>
+        <DialogTitle id="alert-dialog-slide-title">Submit Purchase?</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Your order is € {calculateTotalPrice(arrayOfSelectedProducts)}. Do you wish to proceed?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="outlined" color="secondary" onClick={() => setModalOpen(false)}>
+            Close
+          </Button>
+          <Button variant="outlined" color="primary" onClick={() => onSubmit()}>
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   )
 }
